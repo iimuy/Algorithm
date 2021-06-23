@@ -86,6 +86,19 @@ class ArrayList: NSObject {
         return oldElement
     }
     
+    /// 获取对应下表的元素
+    /// - Parameter index: 下表
+    /// - Returns: 返回元素
+    public func get(atIndex index: Int) -> Int{
+        rangeCheck(index: index)
+        for (i, element) in elements.enumerated() {
+            if index == i  {
+                return element
+            }
+        }
+        return default_not_found
+    }
+    
     /// 删除指定下标的元素
     /// - Parameter index: 下标
     /// - Returns: 元素
