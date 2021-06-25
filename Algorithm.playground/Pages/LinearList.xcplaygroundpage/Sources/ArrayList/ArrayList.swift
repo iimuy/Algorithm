@@ -109,10 +109,17 @@ public class ArrayList<Element: Equatable>: NSObject {
         return oldElement
     }
     
+    public func remove(element: Element?) {
+        let index: Int = indexOf(element: element)
+        if index != default_not_found && size > 0 {
+            let _ = remove(index: index)
+        }
+    }
+    
     /// 查找元素下表，返回第一个被查到的下表
     /// - Parameter element: 查找的元素
     /// - Returns: 返回对应元素的下表，-1 表示未找到，
-    public func indexOf(element: Element) -> Int {
+    public func indexOf(element: Element?) -> Int {
         /// 遍历数组，index下表，tmpElement元素
         for (index, tmpElement) in elements.enumerated() {
             if tmpElement == element {
