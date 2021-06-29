@@ -1,16 +1,13 @@
 
 import Foundation
 
-public class ArrayList<Element: Equatable>: NSObject {
-    
-    /// 存储的元素数量
-    private var size: Int = 0
+public class ArrayList<Element: Equatable>: NSObject, LineaList {
+    public var size: Int
+
     /// 存储数据的数组
     private var elements: [Element?]
     /// 默认数组容量
     private final let default_capacity = 10
-    /// 未发现元素标识
-    private final let default_not_found = -1
     
     public override convenience init() {
         self.init(capaticy: 0)
@@ -18,6 +15,7 @@ public class ArrayList<Element: Equatable>: NSObject {
     public init(capaticy: Int) {
         let tmpCapaticy = capaticy < default_capacity ? default_capacity : capaticy
         elements = Array(repeating: nil, count: tmpCapaticy)
+        size = 0
         super.init()
     }
     
@@ -33,33 +31,21 @@ public class ArrayList<Element: Equatable>: NSObject {
     public func count() -> Int {
         return size
     }
-    
-    /// 数组是否为空
-    /// - Returns: ture: 空，false: 不为空
-    public func isEmpty() -> Bool {
-        return size == 0
-    }
-    
-    /// 数组是否包含某个元素
-    /// - Parameter element: 查找的元素
-    /// - Returns: true: 找到, false: 未找到
-    public func contains(element: Element) -> Bool {
-        return indexOf(element: element) != default_not_found
-    }
+
     
     /// 添加元素到数组尾部
     /// - Parameter element: 元素
     public func add(element: Element?) {
-        insert(element: element, atIndex: size)
+        add(element: element, atIndex: size)
     }
     
     /// 插入元素到数组指定下表
     /// - Parameters:
     ///   - element: 元素
     ///   - index: 下表
-    public func insert(element: Element?,atIndex index: Int) {
+    public func add(element: Element?,atIndex index: Int) {
         
-        rangeCheckForInsert(index: index)
+        rangeCheckForAdd(index: index)
         ensureCapacity(capacity: size+1)
         var i: Int = size
         while i > index + 1 {
@@ -109,11 +95,12 @@ public class ArrayList<Element: Equatable>: NSObject {
         return oldElement
     }
     
-    public func remove(element: Element?) {
+    public func remove(element: Element?) -> Element? {
         let index: Int = indexOf(element: element)
         if index != default_not_found && size > 0 {
-            let _ = remove(index: index)
+            return remove(index: index)
         }
+        return nil
     }
     
     /// 查找元素下表，返回第一个被查到的下表
@@ -128,25 +115,7 @@ public class ArrayList<Element: Equatable>: NSObject {
         }
         return default_not_found
     }
-    
-    /// 检查下标是否越界
-    /// - Parameter index: 下标
-    private func rangeCheck(index: Int) {
-        if index < 0 || index >= size {
-            outOfBounds(index: index)
-        }
-    }
-    /// 添加元素抛出的异常
-    /// - Parameter index: 添加元素的下标
-    private func rangeCheckForInsert(index: Int) {
-        if index < 0 || index > size {
-            outOfBounds(index: index)
-        }
-    }
-    private func outOfBounds(index: Int) {
-        assert(false, "数组越界 index:\(index), size:\(size)")
-    }
-    
+
     /// 保证要有capacity的容量
     /// - Parameter capacity: 容量
     private func ensureCapacity(capacity: Int) {
