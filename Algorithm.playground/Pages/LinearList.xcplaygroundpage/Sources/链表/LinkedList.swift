@@ -71,6 +71,7 @@ public class LinkedList<Element: Equatable>: NSObject, LineaList {
     
     
     public func add(element: Element?, atIndex index: Int) {
+        rangeCheckForAdd(index: index)
         if index == 0 {
             first = Node(element: element, next: first)
         }else{
@@ -82,6 +83,7 @@ public class LinkedList<Element: Equatable>: NSObject, LineaList {
 
     
     public func remove(index: Int) -> Element? {
+        rangeCheck(index: index)
         var node = first
         if index == 0 {
             first = first?.next
