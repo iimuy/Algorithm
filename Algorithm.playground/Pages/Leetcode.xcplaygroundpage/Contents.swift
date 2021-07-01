@@ -2,8 +2,12 @@
 
 import Foundation
 
-testLinkedCycle()
+//testLinkedCycle()
+//
+//testDeleteNode()
 
-testDeleteNode()
+
+testFindMedianSortedArrays()
+
 
 //: [Next](@next)
