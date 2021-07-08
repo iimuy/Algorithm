@@ -1,38 +1,5 @@
 import Foundation
 
-//public class Node<Element: Equatable>: NSObject {
-//    var elment: Element?
-//    var prev: Node<Element>?
-//    var next: Node<Element>?
-//
-//    public func Node(prev: Node<Element>, element: Element, next: Node<Element>) {
-//        self.prev = prev
-//        self.next = next
-//        self.elment = element
-//    }
-//    public override var description: String{
-//        var string: String = ""
-//        if let prev = self.prev, let elment = prev.elment {
-//            string.append("\(elment)")
-//        }else{
-//            string.append("null");
-//        }
-//        string.append("_")
-//        if self.elment != nil {
-//            string.append("\(String(describing: elment))")
-//        }else{
-//            string.append("null")
-//        }
-//        string.append("_")
-//        if let next = self.next, let elment = next.elment {
-//            string.append("\(elment)")
-//        }else{
-//            string.append("null");
-//        }
-//        return ""
-//    }
-//}
-
 public class Node<Element: Equatable>: NSObject {
     var element: Element?
     var next: Node<Element>?
@@ -40,14 +7,17 @@ public class Node<Element: Equatable>: NSObject {
         self.element = element;
         self.next = next;
     }
+    public override var description: String {
+        guard let tmpElement = element else {
+            return "nil"
+        }
+        return "\(tmpElement)"
+    }
 }
 
-
-public class LinkedList<Element: Equatable>: NSObject, LineaList {
+public class SingleLinkedList<Element: Equatable>: NSObject, LinearList {
     
-    public typealias ItemType = Element
     public var size: Int
-    
     private var first: Node<Element>?
     override public init() {
         self.size = 0
@@ -69,7 +39,6 @@ public class LinkedList<Element: Equatable>: NSObject, LineaList {
         return oldElement
     }
     
-    
     public func add(element: Element?, atIndex index: Int) {
         rangeCheckForAdd(index: index)
         if index == 0 {
@@ -80,7 +49,6 @@ public class LinkedList<Element: Equatable>: NSObject, LineaList {
         }
         size += 1
     }
-
     
     public func remove(index: Int) -> Element? {
         rangeCheck(index: index)
@@ -120,10 +88,6 @@ public class LinkedList<Element: Equatable>: NSObject, LineaList {
         return default_not_found
     }
     
-    
-    /// 根据下标找到对应的节点
-    /// - Parameter index: 下标
-    /// - Returns: 返回对应的节点
     private func node(atIndex index: Int) -> Node<Element>? {
         rangeCheck(index: index)
         var node = first
@@ -132,5 +96,22 @@ public class LinkedList<Element: Equatable>: NSObject, LineaList {
         }
         return node
     }
-    
+    public override var description: String {
+        var node: Node? = first
+        var tmpString : String = "["
+        for index in 0..<size {
+            if index != 0 {
+                tmpString.append(",")
+            }
+            if let tmpNode = node, let element = tmpNode.element {
+                tmpString.append("\(element)")
+            }else {
+                tmpString.append("nil")
+            }
+            node = node?.next
+        }
+        tmpString.append("]")
+        return tmpString
+    }
 }
+
