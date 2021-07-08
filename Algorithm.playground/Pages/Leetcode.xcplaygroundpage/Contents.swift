@@ -7,7 +7,7 @@ import Foundation
 //testDeleteNode()
 
 
-testFindMedianSortedArrays()
+//testFindMedianSortedArrays()
 
 
 //: [Next](@next)

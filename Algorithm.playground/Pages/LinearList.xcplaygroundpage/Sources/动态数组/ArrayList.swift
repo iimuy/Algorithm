@@ -25,6 +25,10 @@ public class ArrayList<Element: Equatable>: NSObject, LineaList {
             elements[index] = nil
         }
         size = 0
+        /// 可以进行缩容处理，也可以不处理
+        if elements.count > default_capacity {
+            elements = Array(repeating: nil, count: default_capacity)
+        }
     }
     
     /// 数组元素数量
@@ -92,6 +96,7 @@ public class ArrayList<Element: Equatable>: NSObject, LineaList {
         }
         size -= 1
         elements[size] = nil
+        trim()
         return oldElement
     }
     
@@ -132,6 +137,22 @@ public class ArrayList<Element: Equatable>: NSObject, LineaList {
             newElements[index] = element
         }
         elements = newElements
+    }
+    /// 如果扩容倍数和缩容倍数设计不当，可能会导致复杂度震荡，扩容倍数和缩容倍数相除不为1，
+    /// 扩容 1倍，缩容1倍，在添加最后一个元素后，在进行删除，这样会产生缩容动荡
+    private func trim() {
+        let oldCapacity = elements.count
+        let newCapacity = oldCapacity << 1
+        if size > newCapacity || size <= default_capacity{
+            return;
+        }
+        /// 数组元素拷贝到新数组里
+        var newElements:[Element?] = Array(repeating: nil, count: newCapacity)
+        for (index, element) in elements.enumerated() {
+            newElements[index] = element
+        }
+        elements = newElements
+        print("缩容前:\(elements),缩容后:\(elements)")
     }
     
     public override var description: String {
